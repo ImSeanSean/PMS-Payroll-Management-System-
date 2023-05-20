@@ -397,6 +397,9 @@ public class AddPayroll extends javax.swing.JFrame {
                             JOptionPane.showMessageDialog(this, "Enter Valid Percentage");
                         }
                     }
+                    else{
+                        return;
+                    }
                 }
                 while(correct == false);
             }

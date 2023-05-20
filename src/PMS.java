@@ -41,26 +41,37 @@ public class PMS extends javax.swing.JFrame {
     
     public PMS() {
         initComponents();
+        teachingtype.setVisible(false);
+        codee.setVisible(false);
         Connect();
         Fetch();
         teachingtype.setVisible(false);
         codee.setVisible(false);
+        salary.setVisible(false);
+        allowance.setVisible(false);
+        deductions.setVisible(false);
+        thours.setVisible(false);
+        ohours.setVisible(false);
+        ahours.setVisible(false);
+        opay.setVisible(false);
     }
     
     Connection con;
     PreparedStatement pst;
     ResultSet rs;
-    
-    public void Connect(){
+    public int Connect(){
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(db[0], db[1], db[2]);
+            return 1;
         } catch (ClassNotFoundException ex) {
             JOptionPane.showMessageDialog(this, "Missing Necessary Libraries");
             Logger.getLogger(PMS.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "Database Invalid");
             Logger.getLogger(PMS.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
         }
     }
     
@@ -140,23 +151,20 @@ public class PMS extends javax.swing.JFrame {
     }
     public void SubmitSalary(){
         try {
-            //Update Salary
             pst = con.prepareStatement("UPDATE Employee SET salary = ? WHERE code = ?");
             pst.setString(1, salary.getText());
             pst.setString(2, codee.getText());
-            
             int k = pst.executeUpdate();
             Fetch();
-                     
             if(k == 1){
-
             }
             else{
                 JOptionPane.showMessageDialog(this, "Payroll Error");
-                return;
             }
         } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Payroll Error");
             Logger.getLogger(AddPayroll.class.getName()).log(Level.SEVERE, null, ex);
+            return;
         }
         Fetch();
         try {
@@ -176,9 +184,13 @@ public class PMS extends javax.swing.JFrame {
             int k = pst.executeUpdate();
             if(k == 1){
                 JOptionPane.showMessageDialog(this, "Payroll Added");
+                lNameField.setText("");
+                payratee.setText("");
             }
             else{
                 JOptionPane.showMessageDialog(this, "Payroll Error");
+                lNameField.setText("");
+                payratee.setText("");
             }
         } catch (SQLException ex) {
             Logger.getLogger(PMS.class.getName()).log(Level.SEVERE, null, ex);
@@ -195,7 +207,6 @@ public class PMS extends javax.swing.JFrame {
             Fetch();
                      
             if(k == 1){
-
             }
             else{
                 JOptionPane.showMessageDialog(this, "Payroll Error");
@@ -222,9 +233,13 @@ public class PMS extends javax.swing.JFrame {
             int k = pst.executeUpdate();
             if(k == 1){
                 JOptionPane.showMessageDialog(this, "Payroll Updated");
+                lNameField.setText("");
+                payratee.setText("");
             }
             else{
                 JOptionPane.showMessageDialog(this, "Payroll Error");
+                lNameField.setText("");
+                payratee.setText("");
             }
         } catch (SQLException ex) {
             Logger.getLogger(PMS.class.getName()).log(Level.SEVERE, null, ex);
@@ -779,20 +794,10 @@ public class PMS extends javax.swing.JFrame {
 
     private void TEmployeeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TEmployeeButtonActionPerformed
         // TODO add your handling code here:
-        //Code Incrementation
-        int code = Year.now().getValue() * 100000;
-        try {
-            pst = con.prepareStatement("SELECT MAX(code) FROM Employee");
-            rs = pst.executeQuery();
-            //
-            if(rs.next()){
-                code = rs.getInt(1);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(PMS.class.getName()).log(Level.SEVERE, null, ex);
+        int check = Connect();
+        if(check == 0){
+            return;
         }
-        code = code > 0 ? code + 1 : Year.now().getValue() * 100000+1;
-
         //Other Information
         String fname = fNameField.getText();
         String lname = lNameField.getText();
@@ -826,6 +831,19 @@ public class PMS extends javax.swing.JFrame {
         if(payrate.length() > 15){
             JOptionPane.showMessageDialog(this, "Pay Rate cannot exceed 15 digits");
         }
+                //Code Incrementation
+        int code = Year.now().getValue() * 100000;
+        try {
+            pst = con.prepareStatement("SELECT MAX(code) FROM Employee");
+            rs = pst.executeQuery();
+            //
+            if(rs.next()){
+                code = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PMS.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        code = code > 0 ? code + 1 : Year.now().getValue() * 100000+1;
         try {
             //Store to Database
             pst = con.prepareStatement("INSERT INTO Employee(code,fname,lname,department,position,type,payrate)VALUES(?,?,?,?,?,?,?)");
@@ -863,6 +881,10 @@ public class PMS extends javax.swing.JFrame {
 
     private void TeachingEmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TeachingEmployeeActionPerformed
         // TODO add your handling code here:
+        int check = Connect();
+        if(check == 0){
+            return;
+        }
         int q;
         try {
             pst = con.prepareStatement("SELECT * FROM Employee");
@@ -906,20 +928,10 @@ public class PMS extends javax.swing.JFrame {
 
     private void NTEmployeeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NTEmployeeButtonActionPerformed
         // TODO add your handling code here:
-        //Code Incrementation
-        int code = Year.now().getValue() * 100000;
-        try {
-            pst = con.prepareStatement("SELECT MAX(code) FROM Employee");
-            rs = pst.executeQuery();
-            //
-            if(rs.next()){
-                code = rs.getInt(1);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(PMS.class.getName()).log(Level.SEVERE, null, ex);
+        int check = Connect();
+        if(check == 0){
+            return;
         }
-        code = code > 0 ? code + 1 : Year.now().getValue() * 100000+1;
-
         //Other Information
         String fname = fNameField.getText();
         String lname = lNameField.getText();
@@ -953,7 +965,19 @@ public class PMS extends javax.swing.JFrame {
         if(payrate.length() > 15){
             JOptionPane.showMessageDialog(this, "Pay Rate cannot exceed 15 digits");
         }
-
+                //Code Incrementation
+        int code = Year.now().getValue() * 100000;
+        try {
+            pst = con.prepareStatement("SELECT MAX(code) FROM Employee");
+            rs = pst.executeQuery();
+            //
+            if(rs.next()){
+                code = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PMS.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        code = code > 0 ? code + 1 : Year.now().getValue() * 100000+1;
         try {
             //Store to Database
             pst = con.prepareStatement("INSERT INTO Employee(code,fname,lname,department,position,type,payrate)VALUES(?,?,?,?,?,?,?)");
@@ -991,6 +1015,10 @@ public class PMS extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
+        int check = Connect();
+        if(check == 0){
+            return;
+        }
         DefaultTableModel df = (DefaultTableModel)jTable1.getModel();
         //Make Sure a Table is Selected
         if(jTable1.getSelectedRow() == -1){
@@ -1040,6 +1068,10 @@ public class PMS extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        int check = Connect();
+        if(check == 0){
+            return;
+        }
         ViewEmployee ViewEmployee = new ViewEmployee();
                 // TODO add your handling code here:
         DefaultTableModel df = (DefaultTableModel)jTable1.getModel();
@@ -1084,11 +1116,19 @@ public class PMS extends javax.swing.JFrame {
 
     private void AllEmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AllEmployeeActionPerformed
         // TODO add your handling code here:
+        int check = Connect();
+        if(check == 0){
+            return;
+        }
         Fetch();
     }//GEN-LAST:event_AllEmployeeActionPerformed
 
     private void NonTeachingEmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NonTeachingEmployeeActionPerformed
         // TODO add your handling code here:
+        int check = Connect();
+        if(check == 0){
+            return;
+        }
         int q;
         try {
             pst = con.prepareStatement("SELECT * FROM Employee");
@@ -1125,6 +1165,10 @@ public class PMS extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
+        int check = Connect();
+        if(check == 0){
+            return;
+        }
         DefaultTableModel df = (DefaultTableModel)jTable1.getModel();
         //Make Sure a Table is Selected
         if(jTable1.getSelectedRow() == -1){
@@ -1166,6 +1210,10 @@ public class PMS extends javax.swing.JFrame {
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
+        int check = Connect();
+        if(check == 0){
+            return;
+        }
         DefaultTableModel df = (DefaultTableModel)jTable1.getModel();
         AddPayroll proll = new AddPayroll();
         //Make Sure a Table is Selected
@@ -1205,6 +1253,10 @@ public class PMS extends javax.swing.JFrame {
             proll.thours.setVisible(false);
             proll.thourslabel.setVisible(false);
         }
+        else{
+            proll.thourslabel.setVisible(true);
+            proll.thours.setVisible(true);
+        }
         proll.payrate.setText(payrate);
         proll.mainframe(this);
         proll.setVisible(true);
@@ -1217,6 +1269,10 @@ public class PMS extends javax.swing.JFrame {
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
+        int check = Connect();
+        if(check == 0){
+            return;
+        }
         DefaultTableModel df = (DefaultTableModel)jTable1.getModel();
         //Make Sure a Table is Selected
         if(jTable1.getSelectedRow() == -1){
@@ -1269,6 +1325,10 @@ public class PMS extends javax.swing.JFrame {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
+        int check = Connect();
+        if(check == 0){
+            return;
+        }
         DefaultTableModel df = (DefaultTableModel)jTable1.getModel();
         EditPayroll eproll = new EditPayroll();
         //Make Sure a Table is Selected
@@ -1324,12 +1384,20 @@ public class PMS extends javax.swing.JFrame {
             eproll.thours.setVisible(false);
             eproll.thours.setText("0");
         }
+        else{
+            eproll.thourslabel.setVisible(true);
+            eproll.thours.setVisible(true);
+        }
         eproll.mainframe(this);
         eproll.setVisible(true);     
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         // TODO add your handling code here:
+        int check = Connect();
+        if(check == 0){
+            return;
+        }
         DefaultTableModel df = (DefaultTableModel)jTable1.getModel();
         ViewPayRoll vroll = new ViewPayRoll();
         //Make Sure a Table is Selected
@@ -1687,6 +1755,10 @@ public class PMS extends javax.swing.JFrame {
         }
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
         // TODO add your handling code here:
+        int check = Connect();
+        if(check == 0){
+            return;
+        }
         SearchOptions search = new SearchOptions();
         //Open Window
         search.mainframe(this);
@@ -1983,6 +2055,10 @@ public class PMS extends javax.swing.JFrame {
         }
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
         // TODO add your handling code here:
+        int check = Connect();
+        if(check == 0){
+            return;
+        }
         SortOptions sort = new SortOptions();
         //Open Window
         sort.mainframe(this);
@@ -1991,6 +2067,10 @@ public class PMS extends javax.swing.JFrame {
 
     private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
         // TODO add your handling code here:
+        int check = Connect();
+        if(check == 0){
+            return;
+        }
         int q;
         try {
             pst = con.prepareStatement("SELECT * FROM Payroll");

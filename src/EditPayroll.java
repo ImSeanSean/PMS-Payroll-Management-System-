@@ -463,18 +463,18 @@ public class EditPayroll extends javax.swing.JFrame {
         }
         //Submit to Database
         PMS PMS = new PMS();
-        PMS.codee.setText(code.getText());
-        PMS.lNameField.setText(lname.getText());
-        PMS.teachingtype.setText(type.getText());
-        PMS.payratee.setText(payrate.getText());
-        PMS.thours.setText(thoursf+"");
-        PMS.ohours.setText(ohoursf+"");
-        PMS.ahours.setText(ahoursf+"");
-        PMS.allowance.setText(allowance.getText());
-        PMS.deductions.setText(deductions.getText());
-        PMS.opay.setText(otpayfield.getText());
-        PMS.salary.setText(salary.getText());
-        PMS.UpdateSalary();
+        mainframe.codee.setText(code.getText());
+        mainframe.lNameField.setText(lname.getText());
+        mainframe.teachingtype.setText(type.getText());
+        mainframe.payratee.setText(payrate.getText());
+        mainframe.thours.setText(thoursf+"");
+        mainframe.ohours.setText(ohoursf+"");
+        mainframe.ahours.setText(ahoursf+"");
+        mainframe.allowance.setText(allowance.getText());
+        mainframe.deductions.setText(deductions.getText());
+        mainframe.opay.setText(otpayfield.getText());
+        mainframe.salary.setText(salary.getText());
+        mainframe.UpdateSalary();
         //Reset
         mainframe.Fetch();
         dispose();

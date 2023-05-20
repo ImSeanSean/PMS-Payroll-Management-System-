@@ -314,15 +314,15 @@ public class EditEmployee extends javax.swing.JFrame {
         }
         //Return Value
         PMS PMS = new PMS();
-        PMS.fNameField.setText(fname);
-        PMS.lNameField.setText(lname);
-        PMS.DepartmentField.setText(department);
-        PMS.PositionField.setText(position);
-        PMS.teachingtype.setText(type);
-        PMS.codee.setText(code);
-        PMS.payratee.setText(payrate);
+        mainframe.fNameField.setText(fname);
+        mainframe.lNameField.setText(lname);
+        mainframe.DepartmentField.setText(department);
+        mainframe.PositionField.setText(position);
+        mainframe.teachingtype.setText(type);
+        mainframe.codee.setText(code);
+        mainframe.payratee.setText(payrate);
         //Update
-        PMS.EditEmployeee();
+        mainframe.EditEmployeee();
         mainframe.Fetch();
         dispose();
     }//GEN-LAST:event_TEmployeeButton2ActionPerformed
@@ -359,15 +359,15 @@ public class EditEmployee extends javax.swing.JFrame {
         }
         //Return Value
         PMS PMS = new PMS();
-        PMS.fNameField.setText(fname);
-        PMS.lNameField.setText(lname);
-        PMS.DepartmentField.setText(department);
-        PMS.PositionField.setText(position);
-        PMS.teachingtype.setText(type);
-        PMS.codee.setText(code);
-        PMS.payratee.setText(payrate);
+        mainframe.fNameField.setText(fname);
+        mainframe.lNameField.setText(lname);
+        mainframe.DepartmentField.setText(department);
+        mainframe.PositionField.setText(position);
+        mainframe.teachingtype.setText(type);
+        mainframe.codee.setText(code);
+        mainframe.payratee.setText(payrate);
         //Update
-        PMS.EditEmployeee();
+        mainframe.EditEmployeee();
         mainframe.Fetch();
         dispose();
     }//GEN-LAST:event_NTEmployeeButton2ActionPerformed
